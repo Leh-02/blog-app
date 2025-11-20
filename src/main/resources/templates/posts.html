@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/header :: content">
+<div>
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>Posts</h2>
+    <div>
+      <a class="btn btn-outline-primary" th:href="@{/posts}">All</a>
+      <a class="btn btn-outline-secondary" th:href="@{/posts/saved}">Saved</a>
+    </div>
+  </div>
+  <div class="list-group mt-3">
+    <div th:each="p : ${posts}" class="list-group-item">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1"><a th:href="@{|/posts/${p.id}|}" th:text="${p.title}">Title</a></h5>
+        <small th:text="${#dates.format(p.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
+      </div>
+      <p class="mb-1" th:text="${p.content.length() > 200 ? p.content.substring(0,200) + '...' : p.content}">Excerpt</p>
+      <small>By <span th:text="${p.author != null ? p.author.username : 'anon'}"></span></small>
+      <div class="mt-2">
+        <form th:action="@{|/posts/${p.id}/like|}" method="post" style="display:inline">
+          <button class="btn btn-sm btn-outline-danger" type="submit">❤ <span th:text="${#lists.size(p.likedBy)}"></span></button>
+        </form>
+        <form th:action="@{|/posts/${p.id}/save|}" method="post" style="display:inline">
+          <button class="btn btn-sm btn-outline-success" type="submit">Save</button>
+        </form>
+        <a class="btn btn-sm btn-link" th:href="@{|/posts/${p.id}|}">Open</a>
+        <span th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" class="float-end">
+          <a class="btn btn-sm btn-warning" th:href="@{|/admin/posts/edit/${p.id}|}">Edit</a>
+          <form th:action="@{|/admin/posts/${p.id}/delete|}" method="post" style="display:inline">
+            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+          </form>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+</html>

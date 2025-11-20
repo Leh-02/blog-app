@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header :: head('Login')"></head>
+
+<body>
+
+<div th:replace="fragments/header :: navbar"></div>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <h2>Login</h2>
+
+      <form th:action="@{/login}" method="post">
+        <div class="mb-3">
+          <label>Email</label>
+          <input type="text" name="username" class="form-control"/>
+        </div>
+
+        <div class="mb-3">
+          <label>Password</label>
+          <input type="password" name="password" class="form-control"/>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Login</button>
+        <a th:href="@{/register}" class="btn btn-link">Register</a>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

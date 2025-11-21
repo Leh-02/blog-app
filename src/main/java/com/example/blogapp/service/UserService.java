@@ -3,29 +3,38 @@ package com.example.blogapp.service;
 import com.example.blogapp.model.Role;
 import com.example.blogapp.model.User;
 import com.example.blogapp.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder encoder;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder encoder) {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.encoder = encoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerReader(User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setRoles(Set.of(Role.READER));
+    public boolean existsByEmail(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // Default role
+        user.setRole(Role.READER);
+
         return userRepository.save(user);
     }
 
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public String getCurrentUserRole() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().iterator().next().getAuthority(); // e.g. "ADMIN"
     }
 }

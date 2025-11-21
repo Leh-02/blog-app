@@ -2,31 +2,53 @@ package com.example.blogapp.controller;
 
 import com.example.blogapp.model.User;
 import com.example.blogapp.service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class AuthController {
+
     private final UserService userService;
 
-    public AuthController(UserService userService) { this.userService = userService; }
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
+    // --- LOGIN PAGE ---
     @GetMapping("/login")
-    public String login() { return "login"; }
+    public String showLoginPage() {
+        return "login";
+    }
 
+    // --- REGISTER PAGE ---
     @GetMapping("/register")
-    public String registerForm(Model model) {
+    public String showRegisterPage(Model model) {
         model.addAttribute("user", new User());
         return "register";
     }
 
+    // --- PROCESS REGISTRATION ---
     @PostMapping("/register")
-    public String register(@Valid User user, BindingResult br, Model model) {
-        if (br.hasErrors()) return "register";
-        userService.registerReader(user);
-        return "redirect:/login?registered";
+    public String registerUser(@ModelAttribute("user") User user, Model model) {
+        if (userService.existsByEmail(user.getEmail())) {
+            model.addAttribute("error", "Email already registered");
+            return "register";
+        }
+
+        userService.createUser(user);  // Пароль шифрується всередині сервісу
+        return "redirect:/login?registered=true";
+    }
+
+    // --- REDIRECT BY ROLE AFTER LOGIN ---
+    @GetMapping("/redirect-after-login")
+    public String redirectAfterLogin() {
+        String role = userService.getCurrentUserRole();
+
+        if (role.equals("ROLE_ADMIN")) {
+            return "redirect:/admin/dashboard";
+        } else {
+            return "redirect:/user/home";
+        }
     }
 }

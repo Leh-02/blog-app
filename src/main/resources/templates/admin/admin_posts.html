@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      th:replace="admin/admin_layout :: layout(~{::content})">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body th:replace="admin/admin_layout :: layout(~{::content})">
 
 <div th:fragment="content">
 
@@ -14,7 +15,9 @@
       <h3 th:text="${p.title}"></h3>
       <small th:text="${#dates.format(p.createdAt,'yyyy-MM-dd HH:mm')}"></small>
 
-      <p th:text="${p.content.length() > 150 ? p.content.substring(0,150) + '...' : p.content}"></p>
+      <p th:text="${p.content != null && p.content.length() > 150
+            ? p.content.substring(0,150) + '...'
+            : p.content}"></p>
 
       <div class="mt-2">
         <a class="btn btn-warning" th:href="@{|/admin/posts/edit/${p.id}|}">Edit</a>
@@ -30,4 +33,5 @@
 
 </div>
 
+</body>
 </html>

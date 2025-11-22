@@ -22,7 +22,7 @@
         <!-- Admin -->
         <li class="nav-item"
             th:if="${#authorization != null and #authorization.expression('hasAuthority(''ADMIN'')')}">
-          <a class="nav-link" th:href="@{/admin/posts}">Admin</a>
+          <a class="nav-link" th:href="@{/templates/admin/posts}">Admin</a>
         </li>
       </ul>
 

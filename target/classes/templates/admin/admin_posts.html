@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="admin_layout :: content">
+<div>
+  <h2>Posts</h2>
+  <a class="btn btn-success" th:href="@{/admin/posts/new}">Create</a>
+
+  <div class="list-group mt-3" th:each="p : ${posts}">
+    <div class="list-group-item d-flex justify-content-between">
+      <div>
+        <h5 th:text="${p.title}"></h5>
+        <small th:text="${p.createdAt}"></small>
+      </div>
+      <div>
+        <a th:href="@{|/admin/posts/edit/${p.id}|}" class="btn btn-warning">Edit</a>
+        <form th:action="@{|/admin/posts/${p.id}/delete|}" method="post" style="display:inline">
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+</html>

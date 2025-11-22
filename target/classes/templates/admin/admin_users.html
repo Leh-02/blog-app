@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="admin_layout :: content">
+<div>
+  <h2>Users</h2>
+
+  <div class="list-group mt-3" th:each="u : ${users}">
+    <div class="list-group-item d-flex justify-content-between">
+      <div>
+        <b th:text="${u.fullName}"></b>
+        <span th:text="${u.email}"></span>
+      </div>
+      <form th:action="@{|/admin/users/${u.id}/delete|}" method="post">
+        <button class="btn btn-danger btn-sm">Delete</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+</html>

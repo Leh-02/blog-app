@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Admin Panel</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+
+<body>
+<div class="admin-container">
+
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar">
+    <h3>Admin</h3>
+    <a th:href="@{/admin/dashboard}">Dashboard</a>
+    <a th:href="@{/admin/posts}">Posts</a>
+    <a th:href="@{/admin/posts/new}">Create Post</a>
+    <a th:href="@{/admin/users}">Users</a>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="content">
+    <div th:replace="~{::content}"></div>
+  </div>
+
+</div>
+</body>
+</html>

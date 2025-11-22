@@ -13,52 +13,52 @@
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{/posts}">BlogApp</a>
 
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" th:href="@{/posts}">Posts</a></li>
+<!--    <div class="collapse navbar-collapse">-->
+<!--      <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--        <li class="nav-item"><a class="nav-link" th:href="@{/posts}">Posts</a></li>-->
 
-        <li class="nav-item"><a class="nav-link" th:href="@{/posts/saved}">Saved</a></li>
+<!--        <li class="nav-item"><a class="nav-link" th:href="@{/posts/saved}">Saved</a></li>-->
 
-        <!-- Admin -->
-        <li class="nav-item"
-            th:if="${#authorization != null and #authorization.expression('hasAuthority(''ADMIN'')')}">
-          <a class="nav-link" th:href="@{/templates/admin/posts}">Admin</a>
-        </li>
-      </ul>
+<!--        &lt;!&ndash; Admin &ndash;&gt;-->
+<!--        <li class="nav-item"-->
+<!--            th:if="${#authorization != null and #authorization.expression('hasAuthority(''ADMIN'')')}">-->
+<!--          <a class="nav-link" th:href="@{/templates/admin/posts}">Admin</a>-->
+<!--        </li>-->
+<!--      </ul>-->
 
-      <ul class="navbar-nav">
+<!--      <ul class="navbar-nav">-->
 
-        <!-- If not logged in -->
-        <li class="nav-item"
-            th:if="${#authentication != null and #authentication.name == 'anonymousUser'}">
-          <a class="nav-link" th:href="@{/login}">Login</a>
-        </li>
+<!--        &lt;!&ndash; If not logged in &ndash;&gt;-->
+<!--        <li class="nav-item"-->
+<!--            th:if="${#authentication != null and #authentication.name == 'anonymousUser'}">-->
+<!--          <a class="nav-link" th:href="@{/login}">Login</a>-->
+<!--        </li>-->
 
-        <li class="nav-item"
-            th:if="${#authentication != null and #authentication.name == 'anonymousUser'}">
-          <a class="nav-link" th:href="@{/register}">Register</a>
-        </li>
+<!--        <li class="nav-item"-->
+<!--            th:if="${#authentication != null and #authentication.name == 'anonymousUser'}">-->
+<!--          <a class="nav-link" th:href="@{/register}">Register</a>-->
+<!--        </li>-->
 
-        <!-- Logged in -->
-        <li class="nav-item dropdown"
-            th:if="${#authentication != null and #authentication.name != 'anonymousUser'}">
+<!--        &lt;!&ndash; Logged in &ndash;&gt;-->
+<!--        <li class="nav-item dropdown"-->
+<!--            th:if="${#authentication != null and #authentication.name != 'anonymousUser'}">-->
 
-          <a class="nav-link dropdown-toggle" href="#" id="userMenu"
-             role="button" data-bs-toggle="dropdown">
-            <span th:text="${#authentication.name}">User</span>
-          </a>
+<!--          <a class="nav-link dropdown-toggle" href="#" id="userMenu"-->
+<!--             role="button" data-bs-toggle="dropdown">-->
+<!--            <span th:text="${#authentication.name}">User</span>-->
+<!--          </a>-->
 
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" th:href="@{/posts/saved}">Saved posts</a></li>
-            <li><hr class="dropdown-divider"/></li>
-            <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
-          </ul>
+<!--          <ul class="dropdown-menu dropdown-menu-end">-->
+<!--            <li><a class="dropdown-item" th:href="@{/posts/saved}">Saved posts</a></li>-->
+<!--            <li><hr class="dropdown-divider"/></li>-->
+<!--            <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>-->
+<!--          </ul>-->
 
-        </li>
+<!--        </li>-->
 
-      </ul>
+<!--      </ul>-->
 
-    </div>
+<!--    </div>-->
   </div>
 </nav>
 

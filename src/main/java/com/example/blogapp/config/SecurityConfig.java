@@ -1,15 +1,18 @@
 package com.example.blogapp.config;
 
-import com.example.blogapp.model.Role;
 import com.example.blogapp.model.User;
 import com.example.blogapp.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 public class SecurityConfig {
@@ -20,7 +23,7 @@ public class SecurityConfig {
         this.userRepository = userRepository;
     }
 
-    // ------------- LOAD USER BY EMAIL -------------
+    // ---------------- USER DETAILS ----------------
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> {
@@ -29,40 +32,56 @@ public class SecurityConfig {
 
             return org.springframework.security.core.userdetails.User
                     .builder()
-                    .username(user.getEmail())              // логін через email
-                    .password(user.getPassword())           // пароль
-                    .authorities(user.getRole().name())     // ADMIN або READER
+                    .username(user.getEmail())
+                    .password(user.getPassword())
+                    .authorities("ROLE_" + user.getRole().name()) // FIXED
                     .build();
         };
     }
 
-    // ------------- PASSWORD ENCODER -------------
+    // ---------------- PASSWORD ENCODER ----------------
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // ------------- SECURITY RULES -------------
+    // ---------------- SUCCESS HANDLER ----------------
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return (HttpServletRequest request,
+                HttpServletResponse response,
+                Authentication auth) -> {
+
+            boolean isAdmin = auth.getAuthorities()
+                    .stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+            if (isAdmin) {
+                response.sendRedirect("/admin/dashboard");
+            } else {
+                response.sendRedirect("/posts");
+            }
+        };
+    }
+
+    // ---------------- SECURITY FILTERS ----------------
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
-                .csrf(csrf -> csrf.disable()) // дозволяємо POST без token (для простоти)
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/", "/login", "/register",
-                                "/css/**", "/js/**", "/images/**"
-                        ).permitAll()
+                        .requestMatchers("/", "/login", "/register",
+                                "/css/**", "/js/**", "/images/**").permitAll()
 
-                        // адмін панель
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN") // FIXED
 
-                        // решта — лише авторизовані
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
-                        .loginPage("/login")                // своя сторінка логіну
-                        .loginProcessingUrl("/login")       // URL куди відправляє форма
-                        .defaultSuccessUrl("/posts", true)  // куди переходить після логіну
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .successHandler(successHandler()) // CUSTOM REDIRECT
                         .permitAll()
                 )
                 .logout(logout -> logout

@@ -1,27 +1,87 @@
-.admin-container {
-    display: flex;
-    min-height: 100vh;
+/* ======== GLOBAL STYLES ========= */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
 }
 
+/* ======== SIDEBAR ========= */
+.admin-container {
+    display: flex;
+}
+
+/* Ліва панель */
 .sidebar {
-    width: 220px;
-    background: #222;
-    color: white;
-    padding: 20px;
-    position: fixed;
+    position: fixed;              /* Фіксуємо */
     top: 0;
-    bottom: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh;                /* На всю висоту */
+    background: #1f2937;          /* Темно-сірий */
+    color: white;
+    padding-top: 20px;
+    box-shadow: 3px 0 10px rgba(0,0,0,0.2);
+}
+
+.sidebar h3 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 25px;
+    color: #fbbf24;               /* Жовтий заголовок */
 }
 
 .sidebar a {
-    color: white;
     display: block;
-    margin: 10px 0;
+    padding: 12px 20px;
+    color: #e5e7eb;
     text-decoration: none;
+    font-size: 16px;
+    transition: 0.25s;
 }
 
+.sidebar a:hover {
+    background: #374151;
+    color: white;
+    padding-left: 30px;           /* Анімація зміщення */
+}
+
+/* ======== MAIN CONTENT ========= */
 .content {
-    margin-left: 240px;
-    padding: 20px;
+    margin-left: 240px;           /* Щоб не лягало поверх sidebar */
+    padding: 30px;
     width: calc(100% - 240px);
+}
+
+/* Блоки списку постів */
+.admin-item {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actions {
+    margin-top: 15px;
+}
+
+.actions .btn {
+    margin-right: 10px;
+}
+
+/* Скрол */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 10px;
 }

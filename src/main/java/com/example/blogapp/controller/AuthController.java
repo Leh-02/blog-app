@@ -31,12 +31,13 @@ public class AuthController {
     // --- PROCESS REGISTRATION ---
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user, Model model) {
+
         if (userService.existsByEmail(user.getEmail())) {
-            model.addAttribute("error", "Email already registered");
+            model.addAttribute("error", "User with this email already exists");
             return "register";
         }
 
-        userService.createUser(user);  // Пароль шифрується всередині сервісу
+        userService.createUser(user);  // Service сам шифрує пароль і ставить роль READER
         return "redirect:/login?registered=true";
     }
 

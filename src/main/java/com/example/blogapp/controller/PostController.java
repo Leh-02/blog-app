@@ -38,7 +38,7 @@ public class PostController {
         if (p.isEmpty()) return "redirect:/posts";
         model.addAttribute("post", p.get());
         model.addAttribute("comment", new Comment());
-        return "user_post_detail";
+        return "reader/user_post_detail";
     }
 
     @PostMapping("/{id}/comment")

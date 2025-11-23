@@ -49,8 +49,8 @@ public class DataInitializer {
             );
 
             Post p2 = new Post(
-                    "Spring Boot + Thymeleaf",
-                    "This demo shows a simple blog using Spring Boot and Thymeleaf.",
+                    "Spring Boot",
+                    "This demo shows a simple blog using Spring Boot.",
                     admin
             );
 

@@ -2,9 +2,14 @@ package com.example.blogapp.controller;
 
 import com.example.blogapp.model.User;
 import com.example.blogapp.service.UserService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class AuthController {
@@ -37,8 +42,21 @@ public class AuthController {
             return "register";
         }
 
-        userService.createUser(user);  // Service сам шифрує пароль і ставить роль READER
-        return "redirect:/login?registered=true";
+        // 1. Create user (assign ROLE_READER + encrypt password)
+        userService.createUser(user);
+
+        // 2. Auto login after registration
+        UsernamePasswordAuthenticationToken auth =
+                new UsernamePasswordAuthenticationToken(
+                        user.getEmail(),
+                        user.getPassword(),
+                        List.of(new SimpleGrantedAuthority("ROLE_READER"))
+                );
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        // 3. Redirect to reader homepage
+        return "redirect:/reader/home";
     }
 
     // --- REDIRECT BY ROLE AFTER LOGIN ---
@@ -49,7 +67,7 @@ public class AuthController {
         if (role.equals("ROLE_ADMIN")) {
             return "redirect:/admin/dashboard";
         } else {
-            return "redirect:/user/home";
+            return "redirect:/reader/home"; // 🔥 Correct page for reader
         }
     }
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="reader/reader_layout :: head"></head>
+
+<body th:replace="reader/reader_layout :: layout(~{::content})">
+
+<div th:fragment="content">
+
+  <h2 class="mb-4">Saved Posts</h2>
+
+  <div class="alert alert-info" th:if="${#lists.isEmpty(posts)}">
+    You have no saved posts.
+  </div>
+
+  <div class="row" th:if="${!#lists.isEmpty(posts)}">
+    <div class="col-md-4 mb-4" th:each="p : ${posts}">
+      <div class="card shadow-sm post-card">
+
+        <div class="card-body">
+          <h5 class="card-title" th:text="${p.title}"></h5>
+
+          <p class="text-muted small"
+             th:text="${#temporals.format(p.createdAt,'yyyy-MM-dd HH:mm')}"></p>
+
+          <p th:text="${p.content.length() > 150 ? p.content.substring(0,150) + '...' : p.content}">
+          </p>
+
+          <a class="btn btn-primary btn-sm"
+             th:href="@{|/posts/${p.id}|}">
+            Open
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

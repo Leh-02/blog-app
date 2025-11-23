@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="reader/reader_layout :: head"></head>
+
+<body th:replace="reader/reader_layout :: layout(~{::content})">
+
+<div th:fragment="content">
+
+  <h2 class="mb-4">All Posts</h2>
+
+  <div th:if="${#lists.isEmpty(posts)}">
+    <p>No posts found.</p>
+  </div>
+
+  <div class="card mb-3" th:each="p : ${posts}">
+    <div class="card-body">
+
+      <h3 th:text="${p.title}"></h3>
+
+      <small class="text-muted"
+             th:text="${#temporals.format(p.createdAt,'yyyy-MM-dd HH:mm')}"></small>
+
+      <p class="mt-2"
+         th:text="${#strings.abbreviate(p.content,150)}"></p>
+
+      <a class="btn btn-primary btn-sm"
+         th:href="@{|/posts/${p.id}|}">
+        Read more
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

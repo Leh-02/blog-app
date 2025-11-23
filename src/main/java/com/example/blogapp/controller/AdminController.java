@@ -1,7 +1,6 @@
 package com.example.blogapp.controller;
 
 import com.example.blogapp.model.Post;
-import com.example.blogapp.model.User;
 import com.example.blogapp.repository.CommentRepository;
 import com.example.blogapp.repository.UserRepository;
 import com.example.blogapp.service.PostService;
@@ -23,7 +22,9 @@ public class AdminController {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
-    public AdminController(PostService postService, UserRepository userRepository, CommentRepository commentRepository) {
+    public AdminController(PostService postService,
+                           UserRepository userRepository,
+                           CommentRepository commentRepository) {
         this.postService = postService;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
@@ -56,7 +57,9 @@ public class AdminController {
             BindingResult br,
             @AuthenticationPrincipal UserDetails userDetails) {
 
-        if (br.hasErrors()) return "admin/admin_posts_form";
+        if (br.hasErrors()) {
+            return "admin/admin_posts_form";
+        }
 
         if (userDetails != null) {
             userRepository.findByEmail(userDetails.getUsername())

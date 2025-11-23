@@ -1,0 +1,138 @@
+
+body {
+    background: #f7f8fa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+    font-weight: 600;
+}
+
+.container {
+    max-width: 900px;
+}
+
+/* ================================
+    NAVBAR
+================================ */
+.navbar {
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.nav-link {
+    font-size: 1rem;
+}
+
+/* ================================
+    POST LIST CARDS
+================================ */
+.card {
+    border: none;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.card-body h3 {
+    margin-bottom: 8px;
+}
+
+.card-body small {
+    color: #6c757d;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+}
+
+/* ================================
+    POST DETAIL PAGE
+================================ */
+.post-title {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.post-meta {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.post-content {
+    font-size: 1.1rem;
+    line-height: 1.55;
+    margin-top: 20px;
+}
+
+/* ================================
+    LIKE & SAVE BUTTONS
+================================ */
+.btn-outline-danger,
+.btn-outline-primary {
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.9rem;
+}
+
+.btn-outline-danger:hover {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-outline-primary:hover {
+    background: #0d6efd;
+    color: white;
+}
+
+/* ================================
+    COMMENTS
+================================ */
+.comment-box {
+    background: #f1f5f9;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #3b82f6;
+}
+
+.comment-box b {
+    font-weight: 600;
+}
+
+.comment-box small {
+    color: #6c757d;
+}
+
+textarea.form-control {
+    border-radius: 8px;
+    resize: none;
+}
+
+.btn-success {
+    border-radius: 20px;
+}
+
+
+.post-card {
+    transition: 0.2s;
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}

@@ -12,17 +12,22 @@ import java.util.Optional;
 
 @Service
 public class PostService {
+
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
-    public PostService(PostRepository postRepository, CommentRepository commentRepository) {
+    public PostService(PostRepository postRepository,
+                       CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
     }
 
     public List<Post> findAll() { return postRepository.findAll(); }
+
     public Optional<Post> findById(Long id) { return postRepository.findById(id); }
+
     public Post save(Post post) { return postRepository.save(post); }
+
     public void delete(Long id) { postRepository.deleteById(id); }
 
     public Comment addComment(Post post, User author, String content) {

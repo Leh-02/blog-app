@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
+<head th:replace="admin/admin_layout :: head"></head>
 <body th:replace="admin/admin_layout :: layout(~{::content})">
 
 <div th:fragment="content">
@@ -13,7 +13,7 @@
     <div th:each="p : ${posts}" class="admin-item p-3 border rounded mb-3">
 
       <h3 th:text="${p.title}"></h3>
-      <small th:text="${#dates.format(p.createdAt,'yyyy-MM-dd HH:mm')}"></small>
+      <small th:text="${#temporals.format(p.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
 
       <p th:text="${p.content != null && p.content.length() > 150
             ? p.content.substring(0,150) + '...'

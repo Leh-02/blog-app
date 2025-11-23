@@ -34,7 +34,7 @@ public class SecurityConfig {
                     .builder()
                     .username(user.getEmail())
                     .password(user.getPassword())
-                    .authorities("ROLE_" + user.getRole().name()) // FIXED
+                    .authorities("ROLE_" + user.getRole().name())
                     .build();
         };
     }
@@ -59,7 +59,7 @@ public class SecurityConfig {
             if (isAdmin) {
                 response.sendRedirect("/admin/dashboard");
             } else {
-                response.sendRedirect("/posts");
+                response.sendRedirect("/reader/home");
             }
         };
     }
@@ -69,21 +69,35 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+                // ❗ H2 працює тільки з вимкненим CSRF для консолі
                 .csrf(csrf -> csrf.disable())
+
+                // ❗ дозволяємо відображення H2 у iframe
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+
                 .authorizeHttpRequests(auth -> auth
+
+                        // ❗ повністю дозволяємо H2 Console
+                        .requestMatchers("/h2-console/**").permitAll()
+
+                        // публічні сторінки
                         .requestMatchers("/", "/login", "/register",
                                 "/css/**", "/js/**", "/images/**").permitAll()
 
-                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN") // FIXED
+                        // тільки адміну
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 
+                        // всі інші — авторизовані
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(login -> login
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .successHandler(successHandler()) // CUSTOM REDIRECT
+                        .successHandler(successHandler())
                         .permitAll()
                 )
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")

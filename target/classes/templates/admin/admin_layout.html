@@ -26,7 +26,6 @@
     </div>
 
     <ul class="nav flex-column">
-
       <li class="nav-item">
         <a th:href="@{/admin/posts}" class="nav-link">
           <i class="fa-solid fa-file-lines"></i> Posts
@@ -43,6 +42,14 @@
         <a th:href="@{/admin/users}" class="nav-link">
           <i class="fa-solid fa-users"></i> Users
         </a>
+      </li>
+
+      <li class="nav-item logout-item">
+        <form th:action="@{/logout}" method="post">
+          <button type="submit" class="nav-link logout-button">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </button>
+        </form>
       </li>
     </ul>
 

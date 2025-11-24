@@ -24,7 +24,7 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
-    // --- Posts that user saved ---
+    //Posts that user saved
     @ManyToMany
     @JoinTable(
             name = "saved_posts",
@@ -33,7 +33,7 @@ public class User {
     )
     private Set<Post> savedPosts = new HashSet<>();
 
-    // --- Posts that user liked ---
+    //Posts that user liked
     @ManyToMany
     @JoinTable(
             name = "liked_posts",
@@ -42,14 +42,14 @@ public class User {
     )
     private Set<Post> likedPosts = new HashSet<>();
 
-    // --- User comments ---
+    //User comments
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
     public User() {
     }
 
-    // ----------- GETTERS / SETTERS -------------
+
 
     public Long getId() { return id; }
 

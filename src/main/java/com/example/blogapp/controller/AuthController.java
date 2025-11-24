@@ -20,20 +20,20 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // --- LOGIN PAGE ---
+    // LOGIN PAGE
     @GetMapping("/login")
     public String showLoginPage() {
         return "login";
     }
 
-    // --- REGISTER PAGE ---
+    //REGISTER PAGE
     @GetMapping("/register")
     public String showRegisterPage(Model model) {
         model.addAttribute("user", new User());
         return "register";
     }
 
-    // --- PROCESS REGISTRATION ---
+    //PROCESS REGISTRATION
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user, Model model) {
 
@@ -42,10 +42,8 @@ public class AuthController {
             return "register";
         }
 
-        // 1. Create user (assign ROLE_READER + encrypt password)
         userService.createUser(user);
 
-        // 2. Auto login after registration
         UsernamePasswordAuthenticationToken auth =
                 new UsernamePasswordAuthenticationToken(
                         user.getEmail(),
@@ -54,12 +52,10 @@ public class AuthController {
                 );
 
         SecurityContextHolder.getContext().setAuthentication(auth);
-
-        // 3. Redirect to reader homepage
         return "redirect:/reader/home";
     }
 
-    // --- REDIRECT BY ROLE AFTER LOGIN ---
+    // REDIRECT BY ROLE AFTER LOGIN
     @GetMapping("/redirect-after-login")
     public String redirectAfterLogin() {
         String role = userService.getCurrentUserRole();
@@ -67,7 +63,7 @@ public class AuthController {
         if (role.equals("ROLE_ADMIN")) {
             return "redirect:/admin/dashboard";
         } else {
-            return "redirect:/reader/home"; // 🔥 Correct page for reader
+            return "redirect:/reader/home";
         }
     }
 }

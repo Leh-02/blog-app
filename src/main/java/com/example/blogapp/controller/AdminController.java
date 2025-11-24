@@ -30,27 +30,27 @@ public class AdminController {
         this.commentRepository = commentRepository;
     }
 
-    // ------------------ DASHBOARD ------------------
+    // DASHBOARD
     @GetMapping("/dashboard")
     public String dashboard() {
         return "admin/admin_dashboard";
     }
 
-    // ------------------ POSTS LIST ------------------
+    //POSTS LIST
     @GetMapping("/posts")
     public String adminPosts(Model model) {
         model.addAttribute("posts", postService.findAll());
         return "admin/admin_posts";
     }
 
-    // ------------------ CREATE POST FORM ------------------
+    // CREATE POST FORM
     @GetMapping("/posts/new")
     public String newPostForm(Model model) {
         model.addAttribute("post", new Post());
         return "admin/admin_posts_form";
     }
 
-    // ------------------ SAVE POST ------------------
+    // SAVE POST
     @PostMapping("/posts")
     public String createPost(
             @Valid @ModelAttribute("post") Post post,
@@ -70,7 +70,7 @@ public class AdminController {
         return "redirect:/admin/posts";
     }
 
-    // ------------------ EDIT POST FORM ------------------
+    //EDIT POST FORM
     @GetMapping("/posts/edit/{id}")
     public String editPost(@PathVariable Long id, Model model) {
         Optional<Post> post = postService.findById(id);
@@ -80,28 +80,28 @@ public class AdminController {
         return "admin/admin_posts_form";
     }
 
-    // ------------------ DELETE POST ------------------
+    // DELETE POST
     @PostMapping("/posts/{id}/delete")
     public String deletePost(@PathVariable Long id) {
         postService.delete(id);
         return "redirect:/admin/posts";
     }
 
-    // ------------------ DELETE COMMENT ------------------
+    // DELETE COMMENT
     @PostMapping("/comments/{id}/delete")
     public String deleteComment(@PathVariable Long id) {
         commentRepository.deleteById(id);
         return "redirect:/admin/posts";
     }
 
-    // ------------------ USERS LIST ------------------
+    // USERS LIST
     @GetMapping("/users")
     public String users(Model model) {
         model.addAttribute("users", userRepository.findAll());
         return "admin/admin_users";
     }
 
-    // ------------------ DELETE USER ------------------
+    // DELETE USER
     @PostMapping("/users/{id}/delete")
     public String deleteUser(@PathVariable Long id) {
         userRepository.deleteById(id);

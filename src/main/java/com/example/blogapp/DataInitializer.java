@@ -25,7 +25,7 @@ public class DataInitializer {
 
             if (userRepository.count() > 0) return;
 
-            // ADMIN
+
             User admin = new User();
             admin.setEmail("admin@example.com");
             admin.setFullName("Admin");
@@ -33,7 +33,7 @@ public class DataInitializer {
             admin.setRole(Role.ADMIN);
             userRepository.save(admin);
 
-            // READER
+
             User reader = new User();
             reader.setEmail("reader@example.com");
             reader.setFullName("Reader");
@@ -41,7 +41,6 @@ public class DataInitializer {
             reader.setRole(Role.READER);
             userRepository.save(reader);
 
-            // POSTS
             Post p1 = new Post(
                     "Welcome to BlogApp",
                     "This is the first post. Welcome!",

@@ -23,7 +23,7 @@ public class SecurityConfig {
         this.userRepository = userRepository;
     }
 
-    // ---------------- USER DETAILS ----------------
+    //USER DETAILS
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> {
@@ -39,13 +39,13 @@ public class SecurityConfig {
         };
     }
 
-    // ---------------- PASSWORD ENCODER ----------------
+    // PASSWORD ENCODER
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // ---------------- SUCCESS HANDLER ----------------
+    //SUCCESS HANDLER
     @Bean
     public AuthenticationSuccessHandler successHandler() {
         return (HttpServletRequest request,
@@ -64,30 +64,19 @@ public class SecurityConfig {
         };
     }
 
-    // ---------------- SECURITY FILTERS ----------------
+    // SECURITY FILTERS
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                // ❗ H2 працює тільки з вимкненим CSRF для консолі
                 .csrf(csrf -> csrf.disable())
-
-                // ❗ дозволяємо відображення H2 у iframe
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
 
                 .authorizeHttpRequests(auth -> auth
-
-                        // ❗ повністю дозволяємо H2 Console
                         .requestMatchers("/h2-console/**").permitAll()
-
-                        // публічні сторінки
                         .requestMatchers("/", "/login", "/register",
                                 "/css/**", "/js/**", "/images/**").permitAll()
-
-                        // тільки адміну
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-
-                        // всі інші — авторизовані
                         .anyRequest().authenticated()
                 )
 

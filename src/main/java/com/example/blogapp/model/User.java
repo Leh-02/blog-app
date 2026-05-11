@@ -1,30 +1,34 @@
 package com.example.blogapp.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String fullName;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 120)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
+    @Column(nullable = false, length = 20)
+    private Role role = Role.READER;
 
-    //Posts that user saved
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
     @ManyToMany
     @JoinTable(
             name = "saved_posts",
@@ -33,7 +37,6 @@ public class User {
     )
     private Set<Post> savedPosts = new HashSet<>();
 
-    //Posts that user liked
     @ManyToMany
     @JoinTable(
             name = "liked_posts",
@@ -42,35 +45,80 @@ public class User {
     )
     private Set<Post> likedPosts = new HashSet<>();
 
-    //User comments
+    @OneToMany(mappedBy = "author")
+    private Set<Post> posts = new HashSet<>();
+
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
-    public User() {
+    @PrePersist
+    public void onCreate() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public String getFullName() {
+        return fullName;
+    }
 
-    public Long getId() { return id; }
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
+    public String getEmail() {
+        return email;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim().toLowerCase();
+    }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public String getPassword() {
+        return password;
+    }
 
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-    public Set<Post> getSavedPosts() { return savedPosts; }
-    public void setSavedPosts(Set<Post> savedPosts) { this.savedPosts = savedPosts; }
+    public Role getRole() {
+        return role;
+    }
 
-    public Set<Post> getLikedPosts() { return likedPosts; }
-    public void setLikedPosts(Set<Post> likedPosts) { this.likedPosts = likedPosts; }
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
-    public Set<Comment> getComments() { return comments; }
-    public void setComments(Set<Comment> comments) { this.comments = comments; }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public Set<Post> getSavedPosts() {
+        return savedPosts;
+    }
+
+    public void setSavedPosts(Set<Post> savedPosts) {
+        this.savedPosts = savedPosts;
+    }
+
+    public Set<Post> getLikedPosts() {
+        return likedPosts;
+    }
+
+    public void setLikedPosts(Set<Post> likedPosts) {
+        this.likedPosts = likedPosts;
+    }
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
 }

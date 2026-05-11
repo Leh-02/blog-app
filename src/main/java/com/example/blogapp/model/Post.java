@@ -16,60 +16,133 @@ public class Post {
     private Long id;
 
     @NotBlank
+    @Column(nullable = false, length = 180)
     private String title;
 
     @Lob
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(length = 255)
+    private String imageOriginalName;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id")
+    @Column(length = 255)
+    private String imageStoredName;
+
+    @Column(length = 120)
+    private String imageContentType;
+
+    private Long imageSize;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdAt ASC")
     private Set<Comment> comments = new LinkedHashSet<>();
 
-    // користувачі, які зберегли пост
     @ManyToMany(mappedBy = "savedPosts")
     private Set<User> savedBy = new LinkedHashSet<>();
 
-    // користувачі, які лайкнули пост
     @ManyToMany(mappedBy = "likedPosts")
     private Set<User> likedBy = new LinkedHashSet<>();
 
-    public Post() {
+    @PrePersist
+    public void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        createdAt = now;
+        updatedAt = now;
     }
 
-    public Post(String title, String content, User author) {
+    @PreUpdate
+    public void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getImageOriginalName() {
+        return imageOriginalName;
+    }
+
+    public void setImageOriginalName(String imageOriginalName) {
+        this.imageOriginalName = imageOriginalName;
+    }
+
+    public String getImageStoredName() {
+        return imageStoredName;
+    }
+
+    public void setImageStoredName(String imageStoredName) {
+        this.imageStoredName = imageStoredName;
+    }
+
+    public String getImageContentType() {
+        return imageContentType;
+    }
+
+    public void setImageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
+    }
+
+    public Long getImageSize() {
+        return imageSize;
+    }
+
+    public void setImageSize(Long imageSize) {
+        this.imageSize = imageSize;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
         this.author = author;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Set<Comment> getComments() {
+        return comments;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public Set<User> getSavedBy() {
+        return savedBy;
+    }
 
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public User getAuthor() { return author; }
-    public void setAuthor(User author) { this.author = author; }
-
-    public Set<Comment> getComments() { return comments; }
-    public void setComments(Set<Comment> comments) { this.comments = comments; }
-
-    public Set<User> getSavedBy() { return savedBy; }
-    public void setSavedBy(Set<User> savedBy) { this.savedBy = savedBy; }
-
-    public Set<User> getLikedBy() { return likedBy; }
-    public void setLikedBy(Set<User> likedBy) { this.likedBy = likedBy; }
+    public Set<User> getLikedBy() {
+        return likedBy;
+    }
 }
